@@ -15,7 +15,29 @@
           href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-{% block content %}{% endblock content %}
+<div class="container">
+    <!-- Start Header -->
+    <div class="row" id="header">
+        <div class="col-xs-12">
+            <h1 class="text-center">Testing payments</h1>
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Start Content -->
+    <div class="row" id="content">
+        {% block content %}{% endblock content %}
+    </div>
+    <!-- Start Content -->
+
+    <!-- Start Footer -->
+    <div class="row" id="footer">
+        <div class="col-xs-12">
+            {% block footer %}&copy; 2017 Testing app for Service of Online Resolutions company{% endblock footer %}
+        </div>
+    </div>
+    <!-- End Footer -->
+</div>
 </body>
 
 </html>
