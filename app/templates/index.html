@@ -8,7 +8,7 @@
 
             <div class="form-group">
                 <label for="amount" class="control-label">Amount:</label>
-                <input name="amount" type="number" class="form-control" id="amount" min="0.01" step="0.01"/>
+                <input name="amount" type="number" class="form-control" id="amount" min="0.01" step="0.01" required />
             </div>
             <div class="form-group">
                 <label for="currency" class="control-label">Currency:</label>
@@ -19,12 +19,36 @@
             </div>
             <div class="form-group">
                 <label for="description" class="control-label">Description:</label>
-                <textarea name="description" class="form-control" id="description"></textarea>
+                <textarea name="description" class="form-control" id="description" required></textarea>
             </div>
             <div class="form-group">
                 <label class="control-label"></label>
-                <input type="submit" class="form-control" value="Pay"/>
+                <input type="button" class="form-control" value="Pay"/>
             </div>
+        </form>
+    </div>
+
+    <div id="tip-payment">
+        <form name="Pay" method="post" action="https://tip.pay-trio.com/ru/" accept-charset="UTF-8">
+            <input type="hidden" name="amount" value="" />
+            <input type="hidden" name="currency" value="840" />
+            <input type="hidden" name="shop_id" value="305154" />
+            <input type="hidden" name="sign" value="" />
+            <input type="hidden" name="shop_invoice_id" value="101" />
+            <input type="hidden" name="description" value="" />
+            <!--<input type="submit"/>-->
+        </form>
+    </div>
+
+    <div id="invoice-payment">
+        <form method="post" action="https://wl.walletone.com/checkout/checkout/Index">
+            <input type="hidden" name="WMI_MERCHANT_ID" value="194260758738"/>
+            <input type="hidden" name="WMI_PAYMENT_AMOUNT" value="10.00"/>
+            <input type="hidden" name="WMI_CURRENCY_ID" value="980"/>
+            <input type="hidden" name="WMI_PAYMENT_NO" value="39"/>
+            <input type="hidden" name="WMI_PTENABLED" value="WalletOneUAH"/>
+            <input type="hidden" name="WMI_SIGNATURE" value=" ThBrO9NKIjxtIzvuqYcCyA=="/>
+            <!--<input type="submit"/>-->
         </form>
     </div>
 </div>
