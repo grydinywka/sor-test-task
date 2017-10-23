@@ -12,14 +12,15 @@ function getSign(currency, amount) {
             'csrf_token': $('input[name="csrf_token"]').val()
         },
         'beforeSend': function(xhr,setting){
-//            alert('before ajax req');
+            alert('before ajax req');
         },
         'error': function(xhr, status, error){
-//             alert(error);
+             alert(error);
         },
         'success': function(data, status, xhr){
-//            alert('AFTER ajax req');
+            alert('AFTER ajax req');
             sign = data['sign'];
+            alert(sign);
         }
     });
 

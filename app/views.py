@@ -56,9 +56,9 @@ def get_sign():
     amount = request.form.get('amount')
 
     if currency == USD:
-        sign = hashlib.md5("{}:{}:{}:{}{}".format(amount, USD_ID, SHOP_ID, SHOP_INVOICE_ID, SECRET)).hexdigest()
+        sign = hashlib.md5("{}:{}:{}:{}{}".format(amount, USD_ID, SHOP_ID, SHOP_INVOICE_ID, SECRET).encode('utf-8')).hexdigest()
     else: # currency == 'eur'
-        sign = hashlib.md5("{}:{}:{}:{}:{}{}".format(amount, EURO_ID, EURO_PAYWAY, SHOP_ID, SHOP_INVOICE_ID, SECRET)).hexdigest()
+        sign = hashlib.md5("{}:{}:{}:{}:{}{}".format(amount, EURO_ID, EURO_PAYWAY, SHOP_ID, SHOP_INVOICE_ID, SECRET).encode('utf-8')).hexdigest()
 
     return json.dumps({"sign": sign})
 
