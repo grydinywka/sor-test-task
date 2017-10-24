@@ -45,13 +45,25 @@ def index():
                             title="Home"
                             )
 
-@app.route('/index/')
-def next():
-    return "Next page"
+@app.route('/invoice-euro/', methods=['POST'])
+def invoice_euro():
+    # currency = request.form.get('currency')
+    amount = request.form.get('amount')
+    description = request.form.get('description')
+    sign = request.form.get('sign')
 
+    r = requests.post('https://central.pay-trio.com/invoice', data=json.dumps(
+                {"amount": amount, "currency": str(EURO_ID), "shop_id": str(SHOP_ID),
+                 "shop_invoice_id": str(SHOP_INVOICE_ID), "payway": EURO_PAYWAY,
+                 "description": description, "sign": sign}), headers={'Content-type': 'application/json'})
+
+    print r.json()
+
+    return json.dumps(r.json())
 
 @app.route('/get-sign/', methods=['POST'])
 def get_sign():
+    app.logger.warning('----------------get-sign-----------------------')
     currency = request.form.get('currency')
     amount = request.form.get('amount')
 

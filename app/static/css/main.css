@@ -6,3 +6,12 @@
 #content {
     margin: 80px 0;
 }
+
+.error_value {
+    border: 2px solid red !important;;
+}
+
+#loading {
+    display: none;
+    text-align: center;
+}
