@@ -57,8 +57,6 @@ def invoice_euro():
                  "shop_invoice_id": str(SHOP_INVOICE_ID), "payway": EURO_PAYWAY,
                  "description": description, "sign": sign}), headers={'Content-type': 'application/json'})
 
-    print r.json()
-
     return json.dumps(r.json())
 
 @app.route('/get-sign/', methods=['POST'])
