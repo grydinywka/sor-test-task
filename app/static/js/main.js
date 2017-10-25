@@ -1,4 +1,4 @@
-function getSign(currency, amount) {
+function getSign(currency, amount, shop_invoice_id, description) {
 //    alert("Here will be alax request");
     var sign;
     $.ajax({
@@ -9,7 +9,9 @@ function getSign(currency, amount) {
         'data': {
             'currency': currency,
             'amount': amount,
-            'csrf_token': $('input[name="csrf_token"]').val()
+            'csrf_token': $('input[name="csrf_token"]').val(),
+            'shop_invoice_id': shop_invoice_id,
+            'description': description
         },
         'beforeSend': function(xhr,setting){
 //            alert('before ajax req');
@@ -30,7 +32,7 @@ function getSign(currency, amount) {
     return sign;
 }
 
-function makeInvoice(currency, amount, description, sign) {
+function makeInvoice(currency, amount, description, sign, shop_invoice_id) {
     var invoice_data;
     $.ajax({
         'url': '/invoice-euro/',
@@ -41,7 +43,8 @@ function makeInvoice(currency, amount, description, sign) {
             'description': description,
             'sign': sign,
             'amount': amount,
-            'csrf_token': $('input[name="csrf_token"]').val()
+            'csrf_token': $('input[name="csrf_token"]').val(),
+            'shop_invoice_id': shop_invoice_id
         },
         'beforeSend': function(xhr,setting){
 //            alert('before ajax req');
@@ -101,12 +104,15 @@ function clickPay() {
         var amount = $('#amount').val();
         var description = $('#description').val();
         var sign;
+        var shop_invoice_id = $('#tip-payment input[name="shop_invoice_id"]').val();
+
+//        alert(shop_invoice_id);
 
         $('.errornote').remove();
         checkAmount();
         checkDescription();
         if ( $('.error_value').length == 0 ) {
-            sign = getSign(currency, amount);
+            sign = getSign(currency, amount, shop_invoice_id, description);
 
             if ( currency == 'usd' ) {
                 var tip_form = $('#tip-payment form');
@@ -117,7 +123,7 @@ function clickPay() {
                 tip_form.submit();
 
             } else { // currency == 'eur'
-                var invoice_data = makeInvoice(currency, amount, description, sign);
+                var invoice_data = makeInvoice(currency, amount, description, sign, shop_invoice_id);
                 var invoice_form = $('#invoice-payment form');
 
                 if ( invoice_data['result'] == 'ok' ) {
@@ -142,7 +148,5 @@ function clickPay() {
 }
 
 $(document).ready(function() {
-//    $('#tip-payment').hide();
-//    checkAmount();
     clickPay();
 });

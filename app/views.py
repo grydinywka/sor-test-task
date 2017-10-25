@@ -1,8 +1,9 @@
 import requests
 import json
 import hashlib
+import random, string
 
-from flask import render_template, request, render_template_string, redirect
+from flask import render_template, request
 
 from app import app
 
@@ -11,39 +12,18 @@ USD = 'usd'
 EURO_ID = 978 #643
 USD_ID = 840
 SHOP_ID = 305154
-SHOP_INVOICE_ID = 101
 SECRET = 'Secret134'
 EURO_PAYWAY = 'payeer_eur'
 
-def tip_payment():
-    pass
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    # if request.method == 'POST':
-    #     print "POST method"
-    #     # we don't need validate fields
-    #     currency = request.form.get('currency')
-    #     amount = request.form.get('amount')
-    #     description = request.form.get('description')
-    #
-    #
-    #     if currency == USD:
-    #         sign = hashlib.md5("{}:{}:{}:{}{}".format(amount, USD_ID, SHOP_ID, SHOP_INVOICE_ID, SECRET)).hexdigest()
-    #         r = requests.post('https://tip.pay-trio.com/ru/', data=json.dumps(
-    #             {"amount": amount, "currency": str(USD_ID), "shop_id": str(SHOP_ID), "shop_invoice_id":
-    #                 str(SHOP_INVOICE_ID),
-    #              "description": description, "sign": sign}), headers={'Content-type': 'application/json'})
-    #     return render_template_string(r.text)
-    #     # return redirect('https://tip.pay-trio.com/ru/', 'HTTP_301_MOVED_PERMANENTLY')
-    #
-    #     print currency
-    # else:
-    #     print "GET method"
-    #     print request.form
+    shop_invoice_id = "".join(random.choice(string.ascii_lowercase) for i in range(10))
+
     return render_template("index.html",
-                            title="Home"
+                            title="Home", usd_id=USD_ID, shop_id=SHOP_ID, shop_invoice_id=shop_invoice_id
                             )
+
 
 @app.route('/invoice-euro/', methods=['POST'])
 def invoice_euro():
@@ -51,32 +31,39 @@ def invoice_euro():
     amount = request.form.get('amount')
     description = request.form.get('description')
     sign = request.form.get('sign')
+    shop_invoice_id = request.form.get('shop_invoice_id')
 
     r = requests.post('https://central.pay-trio.com/invoice', data=json.dumps(
                 {"amount": amount, "currency": str(EURO_ID), "shop_id": str(SHOP_ID),
-                 "shop_invoice_id": str(SHOP_INVOICE_ID), "payway": EURO_PAYWAY,
+                 "shop_invoice_id": str(shop_invoice_id), "payway": EURO_PAYWAY,
                  "description": description, "sign": sign}), headers={'Content-type': 'application/json'})
 
     return json.dumps(r.json())
 
+
 @app.route('/get-sign/', methods=['POST'])
 def get_sign():
-    app.logger.warning('----------------get-sign-----------------------')
     currency = request.form.get('currency')
     amount = request.form.get('amount')
+    shop_invoice_id = request.form.get('shop_invoice_id')
+    description = request.form.get('description')
 
     if currency == USD:
-        sign = hashlib.md5("{}:{}:{}:{}{}".format(amount, USD_ID, SHOP_ID, SHOP_INVOICE_ID, SECRET).encode('utf-8')).hexdigest()
+        sign = hashlib.md5("{}:{}:{}:{}{}".format(amount, USD_ID, SHOP_ID, shop_invoice_id, SECRET).encode('utf-8')).hexdigest()
+
     else: # currency == 'eur'
-        sign = hashlib.md5("{}:{}:{}:{}:{}{}".format(amount, EURO_ID, EURO_PAYWAY, SHOP_ID, SHOP_INVOICE_ID, SECRET).encode('utf-8')).hexdigest()
+        sign = hashlib.md5("{}:{}:{}:{}:{}{}".format(amount, EURO_ID, EURO_PAYWAY, SHOP_ID, shop_invoice_id, SECRET).encode('utf-8')).hexdigest()
+    app.logger.info('currency: {}, amount: {}, description: {}, payment_id: {}'.format(currency, amount, description, shop_invoice_id))
 
     return json.dumps({"sign": sign})
+
 
 @app.route('/success-payment/', methods=['GET'])
 def success_payment():
     return render_template("success_payment.html",
                     title="Success Payment"
                     )
+
 
 @app.route('/fail-payment/', methods=['GET'])
 def fail_payment():

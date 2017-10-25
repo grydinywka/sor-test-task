@@ -16,7 +16,7 @@ if not ON_HEROKU:
     import logging
     from logging.handlers import RotatingFileHandler
 
-    formatter = logging.Formatter( "%(levelname)s %(asctime)s %(module)s: %(message)s")
+    formatter = logging.Formatter( "%(levelname)s %(asctime)s; %(message)s")
     handler = RotatingFileHandler('app/logs/foo.log', maxBytes=100000, backupCount=5)
     handler.setLevel(logging.INFO)
     handler.setFormatter(formatter)

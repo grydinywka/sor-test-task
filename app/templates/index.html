@@ -34,10 +34,10 @@
     <div id="tip-payment">
         <form name="Pay" method="post" action="https://tip.pay-trio.com/ru/" accept-charset="UTF-8">
             <input type="hidden" name="amount" value="" />
-            <input type="hidden" name="currency" value="840" />
-            <input type="hidden" name="shop_id" value="305154" />
+            <input type="hidden" name="currency" value="{{ usd_id }}" />
+            <input type="hidden" name="shop_id" value="{{ shop_id }}" />
             <input type="hidden" name="sign" value="" />
-            <input type="hidden" name="shop_invoice_id" value="101" />
+            <input type="hidden" name="shop_invoice_id" value="{{ shop_invoice_id }}" />
             <input type="hidden" name="description" value="" />
             <!--<input type="submit"/>-->
         </form>
@@ -45,15 +45,6 @@
 
     <div id="invoice-payment">
         <form accept-charset="UTF-8" enctype="multipart/form-data"></form>
-        <!--<form method="GET" action="https://payeer.com/api/merchant/process.php">-->
-            <!--<input type="hidden" name="lang" value="ru"/>-->
-            <!--<input type="hidden" name="m_curorderid" value="51407700"/>-->
-            <!--<input type="hidden" name="m_historytm" value="1508772083"/>-->
-            <!--<input type="hidden" name="m_historyid" value="417067256"/>-->
-            <!--<input type="hidden" name="referer" value="https://payeer.com/merchant/?m_historyid=417067256&m_historytm=1508772083&m_curorderid=51407700&lang=ru"/>-->
-            <!--&lt;!&ndash;<input type="hidden" name="WMI_SIGNATURE" value=" ThBrO9NKIjxtIzvuqYcCyA=="/>&ndash;&gt;-->
-            <!--<input type="submit"/>-->
-        <!--</form>-->
     </div>
 </div>
 
