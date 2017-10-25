@@ -2,6 +2,7 @@ import requests
 import json
 import hashlib
 import random, string
+import sys
 
 from flask import render_template, request
 
@@ -53,8 +54,11 @@ def get_sign():
 
     else: # currency == 'eur'
         sign = hashlib.md5("{}:{}:{}:{}:{}{}".format(amount, EURO_ID, EURO_PAYWAY, SHOP_ID, shop_invoice_id, SECRET).encode('utf-8')).hexdigest()
-    app.logger.warning('currency: {}, amount: {}, description: {}, payment_id: {}'.format(currency, amount,
-                                                                                          description, shop_invoice_id))
+    log_str = 'currency: {}, amount: {}, description: {}, payment_id: {}'.format(currency, amount,
+                                                                                          description, shop_invoice_id)
+    app.logger.warning(log_str)
+    print log_str
+    sys.stdout.flush()
 
     return json.dumps({"sign": sign})
 
