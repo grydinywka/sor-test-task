@@ -8,7 +8,7 @@ from app import app
 
 EURO = 'eur'
 USD = 'usd'
-EURO_ID = 643
+EURO_ID = 978 #643
 USD_ID = 840
 SHOP_ID = 305154
 SHOP_INVOICE_ID = 101
