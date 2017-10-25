@@ -1,2 +1,1 @@
-web: gunicorn app.views:app
-
+web: ./run.py
